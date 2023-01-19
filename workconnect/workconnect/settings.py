@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'workconnect'
 ]
 
 MIDDLEWARE = [
@@ -77,8 +78,8 @@ WSGI_APPLICATION = 'workconnect.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Work_connect',
-        'HOST': 'database-work-connect.cf23tejqrk8l.eu-west-3.rds.amazonaws.com',
+        'NAME': 'workconnect',
+        'HOST': 'database-workconnect-test.cf23tejqrk8l.eu-west-3.rds.amazonaws.com',
         'USER': 'postgres',
         'PASSWORD': 'Bakkali12!',
         'POST': '5432'

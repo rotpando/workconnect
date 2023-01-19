@@ -1,6 +1,6 @@
 from django.urls import include, path
 from rest_framework import routers
-from workconnect.quickstart import views
+from workconnect.workconnect import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)

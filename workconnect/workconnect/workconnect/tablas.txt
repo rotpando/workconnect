@@ -1,0 +1,20 @@
+id
+title str
+company_name str
+city str
+journey str (4 opciones)
+modality str (3 opciones)
+category str
+sub_categories
+salary
+salary_min
+salary_max
+salary_freq
+description
+requirement
+zip
+authortype
+
+
+
+
