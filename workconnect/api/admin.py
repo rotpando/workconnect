@@ -1,3 +1,5 @@
 from django.contrib import admin
-
-# Register your models here.
+from api.models import User,Adver
+# DataFlair
+admin.site.register(User)
+admin.site.register(Adver)
