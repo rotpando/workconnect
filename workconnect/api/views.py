@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from api.models import User, Adver
-from api.serializers import UserSerializer, AdverSerializer
+from api.serializers import UserSerializer, AdverSerializer, RegisterSerializer
 from django.shortcuts import render
 from rest_framework.views import APIView
 import json
@@ -35,3 +35,13 @@ class AdverList(APIView):
                 return Response("Invalid request")
         else:
             return Response("Invalid request")
+
+
+
+class RegisterUser(APIView):
+    def post(self,request,format=None):
+#        users = User.objects.all()
+        user = request.data
+        print(user)
+#        serializer = RegisterSerializer(users, many=True)
+        return Response('user is added to DB ::: ')
