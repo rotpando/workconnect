@@ -36,4 +36,7 @@ class Adver(models.Model):
     zip = models.CharField(max_length = 100)
     authorId = models.CharField(max_length = 100)
     location = models.CharField(max_length = 100)
-    user = models.ForeignKey(User, on_delete = models.CASCADE, default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Prueba(models.Model):
+    authorId = models.CharField(max_length = 100)
