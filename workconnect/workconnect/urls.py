@@ -1,14 +1,11 @@
-from django.urls import include, path
-from rest_framework import routers
-from workconnect.quickstart import views
+from django.contrib import admin
+from django.urls import path
+from api.views import UserList, AdverList, RegisterUser, Login
 
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('admin/', admin.site.urls),
+    path('api/users', UserList.as_view(),name="user list"),
+    path('api/listadver', AdverList.as_view(),name="adver list"),
+    path('api/register', RegisterUser.as_view(),name="registration"),
+    path('api/login', Login.as_view(),name="login")
 ]

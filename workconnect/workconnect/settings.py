@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*3lcbagyy=tqi-ma=y_c0u&r178kt0iz#$bf!)s71n26+v7c^k'
+SECRET_KEY = 'django-insecure-*^s^u()xa07qo-=x=(n47aq%@$%=*l1ut*zyrk11d+6=txcvdz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,13 @@ WSGI_APPLICATION = 'workconnect.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'workconnect',
+        'HOST': 'database-workconnect-test.cf23tejqrk8l.eu-west-3.rds.amazonaws.com',
+        'USER': 'postgres',
+        'PASSWORD': 'Bakkali12!',
+        'POST': '5432'
+
     }
 }
 
@@ -122,7 +128,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
-}
