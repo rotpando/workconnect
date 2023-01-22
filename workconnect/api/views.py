@@ -6,6 +6,9 @@ from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
+
+
+
 from rest_framework import status
 import json
 import bcrypt
@@ -20,7 +23,7 @@ class UserList(APIView):
 
 class AdverList(APIView):
     def get(self,request,format=None):
-        isdict = isinstance(request.data, dict)
+        permissions_classes = [IsAuthenticated]
         if isdict:
             
             try:
@@ -52,10 +55,10 @@ class RegisterUser(APIView):
             if len(tickets) == 0:
                 password = request.data['password'].encode('utf-8')
                 hashed = bcrypt.hashpw(password, salt)
+                
                 user_instance = User.objects.create(email=request.data['email'],password=hashed)
                 user_instance.save()
                 
-                print(salt)
                 return Response('registered',status=status.HTTP_201_CREATED)
             else:
                 return Response('error: email been taken')
@@ -64,8 +67,7 @@ class RegisterUser(APIView):
             return Response('error: bad call, no email.')
 
 class Login(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    
     def post(self,request,format=None):
 
         content = {
