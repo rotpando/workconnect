@@ -3,6 +3,10 @@ from api.models import User, Adver
 from api.serializers import UserSerializer, AdverSerializer, RegisterSerializer, LoginSerializer
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from rest_framework import status
 import json
 import bcrypt
 ''' salt must be saved in .env '''
@@ -27,7 +31,7 @@ class AdverList(APIView):
                             advers = Adver.objects.all()
                             if len(advers) > 0:
                                 serializer = AdverSerializer(advers, many=True)
-                                return Response(serializer.data[(pageNumber*10)-10:(pageNumber*10)])
+                                return Response(serializer.data[(pageNumber*10)-10:(pageNumber*10)],status=status.HTTP_202_ACCEPTED)
                             else:
                                 return Response("[]")
                         else:
@@ -52,7 +56,7 @@ class RegisterUser(APIView):
                 user_instance.save()
                 
                 print(salt)
-                return Response('registered')
+                return Response('registered',status=status.HTTP_201_CREATED)
             else:
                 return Response('error: email been taken')
 
@@ -60,18 +64,32 @@ class RegisterUser(APIView):
             return Response('error: bad call, no email.')
 
 class Login(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     def post(self,request,format=None):
+
+        content = {
+            'user': str(request.user),  # `django.contrib.auth.User` instance.
+            'auth': str(request.auth),  # None
+        }
         if "email" in request.data:
             tickets = User.objects.filter(email=request.data['email'])
+            
             if len(tickets) == 0:
                 return Response('No user found')
             else:
-                print(tickets[0].password)
+                password = request.data['password'].encode('utf-8')
+                hashed = bcrypt.hashpw(password, salt)
+                hashedDecoded = hashed.decode('utf-8')
+                prueba = tickets[0].password[2:-1]
+                print (len(hashedDecoded),prueba)
+                if hashedDecoded == prueba:
+                    print("paso!")
                 serializer = LoginSerializer("kk", many=True)
-                return Response('login')
+                return Response('logued!',status=status.HTTP_202_ACCEPTED)
             
 
         else:
-            return Response('error: wrong login data')
+            return Response('error: wrong login data',status=status.HTTP_202_ACCEPTED)
         
         
