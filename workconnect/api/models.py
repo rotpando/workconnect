@@ -1,23 +1,19 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 # Create your models here.
 
-class User(models.Model):
-    lastName = models.CharField(max_length = 100)
-    firstName = models.CharField(max_length = 100)
-    companyName = models.CharField(max_length = 100)
-    password = models.CharField(max_length = 100)
-    email = models.CharField(max_length = 100)
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,)
     phone = models.CharField(max_length = 100)
     city = models.CharField(max_length = 100)
     kvk = models.CharField(max_length = 100)
     jobCategory = models.CharField(max_length = 100)
     userType = models.CharField(max_length = 100)
     premium = models.BooleanField(default=False)
-    createdDate = models.DateTimeField(default=timezone.now)
-    publishedDate = models.DateTimeField(blank=True, null=True)
+
 
 class Adver(models.Model):
     title = models.CharField(max_length = 100)

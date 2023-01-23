@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import User,Adver
+from api.models import UserProfile, Adver
 # DataFlair
-admin.site.register(User)
+admin.site.register(UserProfile)
 admin.site.register(Adver)

@@ -1,29 +1,28 @@
 from rest_framework.response import Response
-from api.models import User, Adver
+from api.models import UserProfile, Adver
 from api.serializers import UserSerializer, AdverSerializer, RegisterSerializer, LoginSerializer
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-
+from django.contrib.auth.models import User
 
 
 from rest_framework import status
 import json
-import bcrypt
-''' salt must be saved in .env '''
-salt = b'$2b$12$nHb8/YT3vprALE73gciI3u'
+
 
 class UserList(APIView):
     def get(self,request,format=None):
-        users = User.objects.all()
+        users = UserProfile.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
 class AdverList(APIView):
     def get(self,request,format=None):
-        permissions_classes = [IsAuthenticated]
+        isdict=type(request.data)
+        
         if isdict:
             
             try:
@@ -50,22 +49,15 @@ class AdverList(APIView):
 
 class RegisterUser(APIView):
     def post(self,request,format=None):
-        if "email" in request.data:
-            tickets = User.objects.filter(email=request.data['email'])
-            if len(tickets) == 0:
-                password = request.data['password'].encode('utf-8')
-                hashed = bcrypt.hashpw(password, salt)
-                
-                user_instance = User.objects.create(email=request.data['email'],password=hashed)
-                user_instance.save()
-                
-                return Response('registered',status=status.HTTP_201_CREATED)
-            else:
-                return Response('error: email been taken')
-
-        else:   
-            return Response('error: bad call, no email.')
-
+        serializer = RegisterSerializer(request.data)
+        print(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("registered",status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        
+        
 class Login(APIView):
     
     def post(self,request,format=None):
@@ -75,7 +67,7 @@ class Login(APIView):
             'auth': str(request.auth),  # None
         }
         if "email" in request.data:
-            tickets = User.objects.filter(email=request.data['email'])
+            tickets = UserProfile.objects.filter(email=request.data['email'])
             
             if len(tickets) == 0:
                 return Response('No user found')
